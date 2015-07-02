@@ -1,3 +1,7 @@
+/*
+ * implenent GCFLTE
+ * single, all, interratsingle, interratall
+ */
 package cgcdb;
 
 import java.util.Arrays;

@@ -1,3 +1,4 @@
+//encapsulation GCF2G
 package cgcdb;
 
 public class GCFTestcase_2G {

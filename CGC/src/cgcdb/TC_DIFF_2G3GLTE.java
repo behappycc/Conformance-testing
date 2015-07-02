@@ -1,3 +1,4 @@
+//different between ETSI and GCF/PTCRB
 package cgcdb;
 
 public class TC_DIFF_2G3GLTE {

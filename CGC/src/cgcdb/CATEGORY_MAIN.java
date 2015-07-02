@@ -1,3 +1,4 @@
+//interface for catergory main
 package cgcdb;
 
 public interface CATEGORY_MAIN {

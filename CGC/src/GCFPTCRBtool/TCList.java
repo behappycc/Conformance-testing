@@ -22,7 +22,7 @@ public class TCList {
 		db.loadTCList_LTE();
 		db.loadCM_2G();
 		db.loadCD_2G();
-		db.loadGCF_2GG();
+		//db.loadGCF_2GG();
 		db.getGCFTestcase_2G();
 		//db.printGCF();
 	}

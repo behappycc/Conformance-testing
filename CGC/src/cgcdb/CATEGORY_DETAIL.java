@@ -1,3 +1,4 @@
+//interface for category_detail
 package cgcdb;
 
 public interface CATEGORY_DETAIL {

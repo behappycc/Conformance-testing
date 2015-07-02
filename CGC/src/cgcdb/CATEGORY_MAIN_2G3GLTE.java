@@ -1,3 +1,4 @@
+//method for 2G, 3G, LTE
 package cgcdb;
 
 public class CATEGORY_MAIN_2G3GLTE implements CATEGORY_MAIN{
