@@ -1,0 +1,27 @@
+7/7
+learn ETSI, GCF, PTCRB, git, MSSQL, JDBC
+----------
+7/14
+supportband, category_main, category_detail
+----------
+7/21
+sys011, TC_DIFF
+----------
+7/28
+condition, pics
+----------
+8/4
+buffer
+----------
+8/11
+buffer
+----------
+8/18
+test
+----------
+8/25
+Go to HTC
+----------
+9/1
+= D
+----------
