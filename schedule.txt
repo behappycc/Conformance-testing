@@ -8,10 +8,10 @@ supportband, category_main, category_detail
 sys011, TC_DIFF
 ----------
 7/28
-condition, pics
+single, all, interRatSingle, interRatAll
 ----------
 8/4
-buffer
+condition, pics
 ----------
 8/11
 buffer
