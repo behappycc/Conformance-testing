@@ -1,5 +1,5 @@
 7/7
-learn ETSI, GCF, PTCRB, git, MSSQL, JDBC
+learn ETSI, GCF, PTCRB, git, MSSQL, JDBC  abcd
 ----------
 7/14
 supportband, category_main, category_detail
