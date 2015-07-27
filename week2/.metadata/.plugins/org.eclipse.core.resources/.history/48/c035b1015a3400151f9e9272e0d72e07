@@ -1,0 +1,50 @@
+package band;
+
+import java.sql.*;
+
+public class merge {
+
+	Connection conn = null;
+	Statement stmt = null;
+
+	public void connectDB()
+	{
+		try{
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			this.conn = DriverManager.getConnection("jdbc:sqlserver://140.112.42.144\\SQLEXPRESS:1433;user=sa;password=bl618");
+			this.stmt = this.conn.createStatement();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		System.out.println("Connected!");
+	}
+	public ResultSet Query(String q)
+	{
+		ResultSet rs ;
+		try
+		{
+			rs = stmt.executeQuery(q); 
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		} 
+		return rs;
+	}
+	public void closeConn()
+	{
+		try
+		{
+			
+			conn.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public merge()
+	{
+		
+	}
+}

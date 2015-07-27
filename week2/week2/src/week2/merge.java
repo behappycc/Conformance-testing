@@ -3,39 +3,31 @@ package week2;
 import java.sql.*;
 
 public class merge {
-	public static void main(String args[])
+
+	Connection conn = null;
+	Statement stmt = null;
+	public void connectDB(Connection conn)
 	{
-		Connection conn = null;
-		int i = 0;
 		try{
-			
-	
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			conn = DriverManager.getConnection("jdbc:sqlserver://140.112.42.144\\SQLEXPRESS:1433;user=sa;password=bl618");
-			
-			System.out.println("Connected!");
-			
-			String select = "SELECT a.IDENTIFY_CATEGORY ,[CATEGORY_TYPE] ,[INTERIMS_VERSION],[TABLE_SPEC],[SPEC_VERSION],[TABLE_ID],[TABLE_DESC] ,[PRIORITY] ,[OPTIONS],a.RELEASE,[TESTBAND],[WORK_ITEM],[MEMO],[ORDER_ID],[NEW_PERSON] ,[NEW_DATE],[MODIFY_PERSON],[MODIFY_DATE],[RFT],[IDENTIFY_CATEGORY_D],b.RELEASE as RELEASE_D,[CATEGORY_FDD_TYPE],[CATEGORY],[VALID_PALTFORM],[FORMERLY_VALID_PLATFORM],[E_PLATFORM],[D_PLATFORM]  FROM [NTUTC].[dbo].[CATEGORY_2GMAIN] as a inner join [NTUTC].[dbo].[CATEGORY_2GDETAIL] as b on a.IDENTIFY_CATEGORY = b.IDENTIFY_CATEGORY ";		
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(select); 
-			
-			System.out.println("SELECT!");
-			
+			this.conn = DriverManager.getConnection("jdbc:sqlserver://140.112.42.144\\SQLEXPRESS:1433;user=sa;password=bl618");
+			this.stmt = this.conn.createStatement();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		System.out.println("Connected!");
+	}
+	public void insert_DB(ResultSet rs,Connection conn)
+	{
+		int i = 0 ;
+		try{
 			while(rs.next())
 			{
-		
-				/*insert = "INSERT INTO [NTUTC].[dbo].[test] VALUES ("+rs.getInt("IDENTIFY_CATEGORY")+",'"+rs.getString("CATEGORY_TYPE")+"','"+rs.getString("INTERIMS_VERSION")+"','"+rs.getString("TABLE_SPEC")+"','"+rs.getString("SPEC_VERSION")
-				+"','"+rs.getString("TABLE_ID")+"','"+rs.getString("TABLE_DESC")+"','"+rs.getString("PRIORITY")+"','"+rs.getString("OPTIONS")+"','"+rs.getString("RELEASE")+"','"+rs.getString("TESTBAND")
-				+"','"+rs.getString("WORK_ITEM")+"','"+rs.getString("MEMO")+"',"+rs.getInt("ORDER_ID")+",'"+rs.getString("NEW_PERSON")+"',"+rs.getDate("NEW_DATE")+",'"+rs.getString("MODIFY_PERSON")
-				+"',"+rs.getDate("MODIFY_DATE")+",'"+rs.getString("RFT")+"',"+rs.getInt("IDENTIFY_CATEGORY_D")+",'"+rs.getString("RELEASE_D")+"','"+rs.getString("CATEGORY_FDD_TYPE")+"','"+rs.getString("CATEGORY")+"','"+rs.getString("VALID_PALTFORM")+"','"+rs.getString("FORMERLY_VALID_PLATFORM")+"','"+rs.getString("E_PLATFORM")+"','"+rs.getString("D_PLATFORM")+"')";*/
-				
-			
-				i++;
-				if(i%100000==0)System.out.println("100,000 data were inserted!");//check each 100,000 data insert 
-				
 				
 				PreparedStatement stmt2 =conn.prepareStatement("INSERT INTO [NTUTC].[dbo].[test] VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-				
+				i++;
+				if( i % 10000 == 0 ) System.out.println("10000 times insert");
 				stmt2.setInt(1, rs.getInt("IDENTIFY_CATEGORY"));
 				stmt2.setString(2,rs.getString("CATEGORY_TYPE"));
 				stmt2.setString(3,rs.getString("INTERIMS_VERSION"));
@@ -55,6 +47,7 @@ public class merge {
 				stmt2.setString(17,rs.getString("MODIFY_PERSON"));
 				stmt2.setDate(18,rs.getDate("MODIFY_DATE"));
 				stmt2.setString(19,rs.getString("RFT"));
+				/*¡ô2g_main            ¡õ2g_detail*/
 				stmt2.setInt(20,rs.getInt("IDENTIFY_CATEGORY_D"));
 				stmt2.setString(21,rs.getString("RELEASE_D"));
 				stmt2.setString(22,rs.getString("CATEGORY_FDD_TYPE"));
@@ -63,17 +56,34 @@ public class merge {
 				stmt2.setString(25,rs.getString("FORMERLY_VALID_PLATFORM"));
 				stmt2.setString(26,rs.getString("E_PLATFORM"));
 				stmt2.setString(27,rs.getString("D_PLATFORM"));
-				
 				stmt2.executeUpdate();
-				
 			}
-			
-			conn.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public merge()
+	{
+		
+		try {
+			connectDB(this.conn);
+			String select = "SELECT a.IDENTIFY_CATEGORY ,[CATEGORY_TYPE] ,[INTERIMS_VERSION],[TABLE_SPEC],[SPEC_VERSION],[TABLE_ID],[TABLE_DESC] ,[PRIORITY] ,[OPTIONS],a.RELEASE,[TESTBAND],[WORK_ITEM],[MEMO],[ORDER_ID],[NEW_PERSON] ,[NEW_DATE],[MODIFY_PERSON],[MODIFY_DATE],[RFT],[IDENTIFY_CATEGORY_D],b.RELEASE as RELEASE_D,[CATEGORY_FDD_TYPE],[CATEGORY],[VALID_PALTFORM],[FORMERLY_VALID_PLATFORM],[E_PLATFORM],[D_PLATFORM]  FROM [NTUTC].[dbo].[CATEGORY_2GMAIN] as a inner join [NTUTC].[dbo].[CATEGORY_2GDETAIL] as b on a.IDENTIFY_CATEGORY = b.IDENTIFY_CATEGORY ";		
+			ResultSet rs = stmt.executeQuery(select); 
+			System.out.println("SELECT!");
+			insert_DB(rs,this.conn);
+			this.conn.close();
 			rs.close();
 		}
-	
 		catch(Exception e){
 			e.printStackTrace();
-		}	
+		}
+		
+	}
+	public static void main(String args[])
+	{
+		new merge();
 	}
 }

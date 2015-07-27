@@ -1,0 +1,100 @@
+package band;
+
+public class band {
+	
+	private int[]PTCRB_GCF ={0,1};
+	private int[] test_2G = {0,1,0,1};
+	private int[] test_3G = {0,0,0,0};
+	private int[] test_LTE = {0,0,0,0};
+	private String[] band_2g = {"850","900","1800","1900"};
+	private String[] band_3g ={};
+	private String[] band_LTE = {};
+	String query;
+	
+	public void queryString_2G()
+	{
+		this.query = "SELECT ALL FROM NTUST.dbo.test WHERE ";
+		int first = 0;
+		
+		if(PTCRB_GCF[0]==1)
+		{
+			this.query = this.query.concat("CATEGORY_TYPE = 1 and (");
+		}
+		if(PTCRB_GCF[1]==1)
+		{
+			this.query = this.query.concat("CATEGORY_TYPE = 2 and (");
+		}
+		
+		
+		for(int i =0;i<test_2G.length;i++)
+		{
+			if (test_2G[i]==1)
+			{
+				if (first != 0)this.query =this.query.concat(" or ");
+				
+				this.query = this.query.concat(" CATEGORY_FDD_TYPE = ");
+				this.query = this.query.concat(band_2g[i]);
+				first = 1;
+			}
+		}
+		this.query = this.query.concat(")");
+		
+	}
+	public void queryString_3G()
+	{
+		this.query = "SELECT ALL FROM NTUST.dbo.test WHERE ";
+		
+		if(PTCRB_GCF[0]==1)
+		{
+			this.query = this.query.concat(" = ");
+		}
+		if(PTCRB_GCF[1]==1)
+		{
+			this.query = this.query.concat(" = ");
+		}
+		for(int i =0;i<test_3G.length;i++)
+		{
+			if (test_3G[i]==1)
+			{
+				this.query = this.query.concat("or ");
+			}
+		}
+		
+	}
+	public void queryString_LTE()
+	{
+		this.query = "SELECT ALL FROM NTUST.dbo.test WHERE ";
+		
+		if(PTCRB_GCF[0]==1)
+		{
+			this.query = this.query.concat(" = ");
+		}
+		if(PTCRB_GCF[1]==1)
+		{
+			this.query = this.query.concat(" = ");
+		}
+		
+		for(int i =0;i<test_LTE.length;i++)
+		{
+			if (test_LTE[i]==1)
+			{
+				this.query = this.query.concat("or ");
+			}
+		}
+		
+	}
+	
+	public band()
+	{
+		queryString_2G();
+		System.out.println(this.query);
+		
+	}
+	public static void main(String args[])
+	{
+	
+		band b = new band();
+		
+	}
+
+}

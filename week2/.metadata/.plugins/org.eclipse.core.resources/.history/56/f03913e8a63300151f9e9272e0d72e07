@@ -1,0 +1,18 @@
+package band;
+
+public class band {
+	
+	private int[] test_2G = {0,0,0,0};
+	private int[] test_3G = {0,0,0,0};
+	private int[] test_LTE = {0,0,0,0};
+	private String[] band_2g = {"850","900","1800","1900"};
+	private String[] band_3g ={};
+	private String[] band_LTE = {};
+	
+	public static void main(String args[])
+	{
+		
+		
+	}
+
+}
