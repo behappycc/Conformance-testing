@@ -1,0 +1,24 @@
+在認證階段 主要以GCF 與PTCRB為主　
+ETSI 產生的資料　主要是為了知道在標準的條件下該 Testcase需不需要測(也就是去年做的condition true or false)　
+如果在GCF 與PTCRB 中根本沒有的話　是不用產生的　　
+所以在第二步驟　才會是以GCF與PTCRB 為主　
+
+那問題就來的　為什麼不直接由GCF 與PTCRB產生　　　　
+因為GCF 與PTCRB有個規定　PTCRB 沒有的 Testcase 要測在GCF 
+                                                  GCF 沒有的 Testcase 要測在 PTCRB 
+到最後又要透過Diff 回歸到ETSI  
+因此才需要由ETSI 發起　
+
+因此在產生category 時　　
+TC ID 30.9.2 的資料不存在GCF 
+或者說DIFF 資料中ETSI 的30.9.2 對應不到GCF 也對不到PTCRB 因此這一題是不用產生的　
+
+以下舉實際Testcase說明　
+GCF Testcase  13.16.2-1 是ETSI 中的 13.16.2.4.1 (Diff table)   
+GCF 13.16.2-1 testband 沒有資料
+ETSI 的 13.16.2.4.1  可對應到PTCRB的  13.16.2-1 　
+PTCRB 13.16.2-1 的testband 為 all 
+
+13.16.2.4.1  的condition 是C95  
+假設C95 為 True  
+GCF 13.16.2-1 要測　並且為All band
