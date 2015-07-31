@@ -1,0 +1,120 @@
+Band 分成兩種  
+1. 標準訂定的Band 
+2. 客戶支援的Band 
+
+1.標準訂定的Band 是固定的(因組織而不同)  但會一直增加 (因不同國家逐步開放．．)　
+例如 
+2G
+GCF
+GSM900 \GSM1800   
+PTCRB 
+GSM850 \GSM1900   
+
+3G 
+GCF
+FDD I \ FDD VIII
+PTCRB 
+FDD II \ FDD IV \ FDD V
+
+LTE  (LTE 實際上的Band在標準定義裡 有FDD 1 ~ FDD 37) 
+GCF 
+FDD 1 \ FDD 5 \FDD 7 \ FDD 13\ FDD 20 .....
+
+PTCRB 
+FDD 2 \ FDD 4 \ FDD 5 \FDD 7 \ FDD 12\FDD 13 \FDD 14\FDD 17 .... 　
+
+而所謂主band 是指認證組織排定的順序　在客戶不完全支援　的情況下　按順序　排列的第一個band 
+EX: 
+GCF 主band 順序為　
+GSM900 [priority 1] \ GSM1800 [priority 2] 
+PTCRB 主band 順序為 
+GSM850  [priority 2] \ GSM1900 [priority 1]    
+而GCF 與PTCRB 有互相　參考 test case 的習慣 (指GCF 的 band 不用測試的話 如果 PTCRB  要測　則測在　ptcrb) 
+
+所以實際上
+GCF 主band 順序為　
+GSM900 [priority 1] \ GSM1800 [priority 2] \ GSM1900 [priority 3]  \ GSM850  [priority 4]   
+PTCRB 主band 順序為　
+GSM1900 [priority 1] \ GSM850 [priority 2] \ GSM900 [priority 3]  \ GSM1800  [priority 4]   
+
+同理　
+GCF 3G 順序為　
+FDD I \ FDD VIII \ FDD II \ FDD V \ FDD IV 
+
+PTCRB 順序為　
+FDD II \ FDD V \ FDD IV \ FDD I \ FDD VIII 
+
+同理　
+GCF LTE 順序為 
+FDD 3\7\4\5\1\8\11\12\13\14\25\26\18\19\20\21 ....（範例會用到）
+
+PTCRB 順序為  
+FDD 4\7\14\25\24\2\5\7\12\13 .......（範例會用到）
+
+
+2 客戶支援的　band
+完全由客戶決定　也就是 support band 
+例如：客戶要求某案子支援band 可能如下
+2G 
+GSM 900 \ GSM1800 \ GSM 1900 \ GSM 850
+
+3G 
+FDD I \ FDD II \ FDD V 
+
+LTE 
+FDD 1 \ FDD 4 \FDD 5 \FDD 7 \FDD 13 　（範例會用到）
+
+以最複雜的 LTE 為例　　
+
+按上面的客戶支援的 band 為範例　
+假設某 LTE 測試題目 1.x.x 的 資料如下 
+　
+GCF
+1.x.x   FDD 1  沒有　category  
+1.x.x   FDD 5         category 為 A　
+1.x.x   FDD 7         category 為 B   
+1.x.x   FDD 13       category 為 P
+1.x.x   FDD 20  沒有　category   
+
+PTCRB 
+1.x.x FDD 2   category 為 A
+1.x.x FDD 4   category 為 A
+1.x.x FDD 5   category 為 B
+1.x.x FDD 7   category 為 P
+1.x.x FDD 12  category 為 A
+1.x.x FDD 13  沒有　category
+1.x.x FDD 14  沒有　category
+1.x.x FDD 17  category 為 B.. 　 
+
+假設沒有列的 band 同樣沒有　category
+
+Q1 當 1.x.x 為single 時　客戶要取得 GCF 認證時　  
+　　FDD 1  沒有　category (GCF)         不用測
+       FDD 4  category 為 A (PTCRB)　   不用測 但要寫　reference FDD 7 
+       FDD 5  category 為 A   (GCF)     不用測 但要寫　reference FDD 7 
+       FDD 7  category 為 B (GCF)　　　 要測 
+       FDD 13  category 為 P (GCF)      不用測    
+
+     
+Q2 當 1.x.x 為all 時　客戶要取得 GCF 認證時　 
+　　FDD 1  沒有　category (GCF)          不用測
+       FDD 4  category 為 A (PTCRB) 　   要測
+       FDD 5  category 為 A   (GCF)      要測
+       FDD 7  category 為 B (GCF)　　　　要測
+       FDD 13  category 為 P (GCF)       不用測 
+    
+Q3 當 1.x.x 為single 時　客戶要取得 PTCRB 認證時　 　
+　　FDD 1  沒有　category (GCF)          不用測
+       FDD 4  category A (PTCRB) 　      要測
+       FDD 5  category 為 B   (PTCRB)    不用測 但要寫　reference FDD 4 
+       FDD 7  category 為 P (PTCRB)　　　不用測
+       FDD 13  category 為 P (GCF)       不用測    
+
+Q4 當 1.x.x 為all 時　客戶要取得 PTCRB 認證時　　
+　　FDD 1  沒有　category (GCF)          不用測
+       FDD 4  category A (PTCRB) 　      要測
+       FDD 5  category 為 B   (PTCRB)    要測
+       FDD 7  category 為 P (PTCRB)　　　不用測
+       FDD 13  category 為 P (GCF)       不用測
+
+注意FDD 5 跟FDD 7 的 category 會因為認證不同而不同　
