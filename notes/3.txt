@@ -1,0 +1,19 @@
+在GCF 裡　沒有category 的band 　
+以範例來講　
+資料應為　
+1.x.x   FDD 5         category 為 A　
+1.x.x   FDD 7         category 為 B   
+1.x.x   FDD 13       category 為 P　
+事實上　在程式跑的時候　
+如果找不到　就不用出現　（單以GCF角度而言）　
+但　在上述情況下　我們其實還不知道　PTCRB 有沒有　 
+所以　如果用客戶支援的　band 來取category 時　
+應來出客戶所有support band 的資料　包括　沒有category 的
+而不是以　GCF 或　PTCRB 為對象　
+
+所以如果客戶支援　1/17/20 
+假設　某題2.x.x　GCF 與PTCRB 　完全沒有　category 
+資料中也要列出　　
+band 1 沒有category 
+band 17 沒有category 
+band 20 沒有category
