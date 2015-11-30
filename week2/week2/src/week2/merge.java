@@ -1,11 +1,17 @@
 package week2;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import java.util.*;
+
 import java.sql.*;
+
 
 public class merge {
 
 	Connection conn = null;
 	Statement stmt = null;
+	Multimap<String, List<String>> multiMap = ArrayListMultimap.create();
 	public void connectDB(Connection conn)
 	{
 		try{
@@ -25,7 +31,7 @@ public class merge {
 			while(rs.next())
 			{
 				
-				PreparedStatement stmt2 =conn.prepareStatement("INSERT INTO [NTUTC].[dbo].[test] VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				PreparedStatement stmt2 =conn.prepareStatement("INSERT INTO [NTUTC].[dbo].[2G_TEST] VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				i++;
 				if( i % 10000 == 0 ) System.out.println("10000 times insert");
 				stmt2.setInt(1, rs.getInt("IDENTIFY_CATEGORY"));
@@ -67,23 +73,63 @@ public class merge {
 
 	public merge()
 	{
-		
+		int i = 0;
 		try {
 			connectDB(this.conn);
 			String select = "SELECT a.IDENTIFY_CATEGORY ,[CATEGORY_TYPE] ,[INTERIMS_VERSION],[TABLE_SPEC],[SPEC_VERSION],[TABLE_ID],[TABLE_DESC] ,[PRIORITY] ,[OPTIONS],a.RELEASE,[TESTBAND],[WORK_ITEM],[MEMO],[ORDER_ID],[NEW_PERSON] ,[NEW_DATE],[MODIFY_PERSON],[MODIFY_DATE],[RFT],[IDENTIFY_CATEGORY_D],b.RELEASE as RELEASE_D,[CATEGORY_FDD_TYPE],[CATEGORY],[VALID_PALTFORM],[FORMERLY_VALID_PLATFORM],[E_PLATFORM],[D_PLATFORM]  FROM [NTUTC].[dbo].[CATEGORY_2GMAIN] as a inner join [NTUTC].[dbo].[CATEGORY_2GDETAIL] as b on a.IDENTIFY_CATEGORY = b.IDENTIFY_CATEGORY ";		
 			ResultSet rs = stmt.executeQuery(select); 
 			System.out.println("SELECT!");
-			insert_DB(rs,this.conn);
+			
+			
+			while(rs.next())
+			{
+				i++;
+				List<String> val = new ArrayList<String>();
+				val.add(rs.getString("IDENTIFY_CATEGORY"));
+				val.add(rs.getString("CATEGORY_TYPE"));
+				val.add(rs.getString("INTERIMS_VERSION"));
+				val.add(rs.getString("TESTBAND"));
+				val.add(rs.getString("CATEGORY_FDD_TYPE"));
+				multiMap.put(rs.getString("TABLE_ID"),val);
+			}
 			this.conn.close();
 			rs.close();
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		System.out.println(i);
+		i = 0;
+		Set<String> keys = multiMap.keySet();
 		
+        // iterate through the key set and display key and values
+        for (String key : keys) {
+        	i++;
+        
+            if(key.equals("42.4.8.3.6"))
+            {
+            	Iterator<List<String>> s = multiMap.get(key).iterator();
+            	while(s.hasNext())
+            	{
+            		List<String> temp = s.next();
+            		
+            		if(temp.get(2).equals("NAPRD03_v5.24_20151004"))
+            		{
+            			if(temp.get(3).equals("All")||temp.get(3).equals("all"))
+            				System.out.println("42.4.8.3.6 = ALL ,"+temp.get(2)+","+temp.get(4));
+            			else if(temp.get(3).equals("Single")||temp.get(3).equals("single"))
+            				System.out.println("42.4.8.3.6 = single"+temp.get(4));
+            		}
+            	}
+            }
+         
+        }
+		System.out.println(i);
 	}
 	public static void main(String args[])
 	{
 		new merge();
 	}
+
 }

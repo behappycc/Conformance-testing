@@ -1,184 +1,229 @@
 package band;
 
-import java.sql.*;
+import java.util.*;
+
 
 public class band {
 	
-	private int[]PTCRB_GCF ={0,1};
-	private int[] test_2G = {0,1,0,1};
-	private int[] test_3G = {0,0,0,0,0,0};
-	private int[] test_LTE = {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-	private String[] band_2g = {"850","900","1800","1900"};
-	private String[] band_3g ={"FDD I", "FDD II", "FDD III", "FDD IV", "FDD V", "FDD VIII"};
-	private String[] band_LTE = {"FDD 01", "FDD 02", "FDD 03", "FDD 04", "FDD 05", "FDD 06",
+	private String main;
+	private String standard;
+	public int[] test_2G = {0,0,0,0};
+	public int[] test_3G = {0,0,0,0,0,0};
+	public int[] test_LTE = {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+	public String table_id = "10.1 FDD";
+	public String PTCRB_ver = "NAPRD03_v5.23_20150504";
+	public String GCF_ver = "GCF_v3.48.0_20130511_r170";
+	
+	public List<String> list_2g = Arrays.asList("850","900","1800","1900");
+	
+	public List<String> ptcrb_2g = Arrays.asList("900","1800");
+	public List<String> gcf_2g = Arrays.asList("850","1900");
+	
+	public List<String> list_3g = Arrays.asList("FDD I", "FDD II", "FDD III", "FDD IV", "FDD V", "FDD VIII");
+	public List<String> ptcrb_3g = Arrays.asList("FDD II", "FDD V", "FDD I", "FDD IV", "FDD VIII", "FDD III");
+	public List<String> gcf_3g = Arrays.asList("FDD I", "FDD VIII", "FDD II", "FDD V", "FDD IV", "FDD III");
+	
+	public List<String> list_LTE = Arrays.asList("FDD 01", "FDD 02", "FDD 03", "FDD 04", "FDD 05", "FDD 06",
     		"FDD 07", "FDD 08", "FDD 09", "FDD 10", "FDD 11", "FDD 12",
     		"FDD 13", "FDD 14", "FDD 15", "FDD 16", "FDD 17", "FDD 18",
     		"FDD 19", "FDD 20", "FDD 21", "FDD 22", "FDD 23", "FDD 24",
-    		"FDD 25", "FDD 26", "FDD 27", "FDD 28", "FDD 29", "FDD 30"};
-    ;
+    		"FDD 25", "FDD 26", "FDD 27", "FDD 28", "FDD 29", "FDD 30","FDD 31","TDD 38","TDD 39","TDD 40","TDD 41");
+    
+	//3\7\4\5\1\8\11\12\13\14\25\26\18\19\20\21 
+	public List<String> gcf_lte = Arrays.asList("FDD 03","FDD 07","FDD 04","FDD 05", "FDD 01","FDD 08","FDD 11", "FDD 12",
+    		"FDD 13", "FDD 14", "FDD 25", "FDD 26","FDD 18",
+    		"FDD 19", "FDD 20", "FDD 21","FDD 02","FDD 06",
+    		  "FDD 09", "FDD 10",  "FDD 15", "FDD 16", "FDD 17",  "FDD 22", "FDD 23", "FDD 24",
+    		 "FDD 27", "FDD 28", "FDD 29", "FDD 30","FDD 31","TDD 38","TDD 39","TDD 40","TDD 41");
+	//FDD 4\17\14\25\24\2\5\7\12\13
+	public List<String> ptcrb_lte = Arrays.asList("FDD 04","FDD 17","FDD 14","FDD 25","FDD 24","FDD 02","FDD 05","FDD 07","FDD 12",
+    		 "FDD 13", "FDD 01" ,"FDD 03", "FDD 06",
+    		 "FDD 08", "FDD 09", "FDD 10", "FDD 11","FDD 15", "FDD 16",  "FDD 18",
+    		 "FDD 19", "FDD 20", "FDD 21", "FDD 22","FDD 23", 
+    		 "FDD 26", "FDD 27", "FDD 28", "FDD 29","FDD 30","FDD 31","TDD 38","TDD 39","TDD 40","TDD 41");
+	
 	String query;
+	public boolean singleCompare(List<String>t , List<String> n,int ver)
+	{
+		if(ver == 1)
+		{
+			for(int i = 0;i<Integer.valueOf(t.get(6));i++)
+			{
+				String t_band = t.get(i+7);
+				String n_band = n.get(i+7);
+				if(list_LTE.contains(t_band)&&list_LTE.contains(n_band))
+				{
+					if(gcf_lte.indexOf(t_band)>gcf_lte.indexOf(n_band)) return true;
+					else if(gcf_lte.indexOf(t_band)<gcf_lte.indexOf(n_band))return false;
+				}
+				else if(list_3g.contains(t_band)&&list_3g.contains(n_band))
+				{
+					if(gcf_3g.indexOf(t_band)>gcf_3g.indexOf(n_band)) return true;
+					else if(gcf_3g.indexOf(t_band)<gcf_3g.indexOf(n_band))return false;
+				}
+				else if(list_2g.contains(t_band)&&list_2g.contains(n_band))
+				{
+					if(gcf_2g.indexOf(t_band)>gcf_2g.indexOf(n_band)) return true;
+					else if(gcf_2g.indexOf(t_band)<gcf_2g.indexOf(n_band))return false;
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0;i<Integer.valueOf(t.get(6));i++)
+			{
+				String t_band = t.get(i+7);
+				String n_band = n.get(i+7);
+				if(list_LTE.contains(t_band)&&list_LTE.contains(n_band))
+				{
+					if(ptcrb_lte.indexOf(t_band)>ptcrb_lte.indexOf(n_band)) return true;
+					else if(ptcrb_lte.indexOf(t_band)<ptcrb_lte.indexOf(n_band))return false;
+				}
+				else if(list_3g.contains(t_band)&&list_3g.contains(n_band))
+				{
+					if(ptcrb_3g.indexOf(t_band)>ptcrb_3g.indexOf(n_band)) return true;
+					else if(ptcrb_3g.indexOf(t_band)<ptcrb_3g.indexOf(n_band))return false;
+				}
+				else if(list_2g.contains(t_band)&&list_2g.contains(n_band))
+				{
+					if(ptcrb_2g.indexOf(t_band)>ptcrb_2g.indexOf(n_band)) return true;
+					else if(ptcrb_2g.indexOf(t_band)<ptcrb_2g.indexOf(n_band))return false;
+				}
+			}
+		}
+		return true;		
+	}
+	public boolean contains_test(String b)
+	{
+		if(list_LTE.contains(b)&&test_LTE[list_LTE.indexOf(b)]==1)
+			return true;
+		else if (list_3g.contains(b)&&test_3G[list_3g.indexOf(b)]==1)
+			return true;
+		else if (list_2g.contains(b)&&test_2G[list_2g.indexOf(b)]==1)
+			return true;
+		else return false;
+	}
+	public boolean contains(String b)
+	{
+		if(list_LTE.contains(b)||list_3g.contains(b)||list_2g.contains(b))
+			return true;
+		else return false;
+	}
+	public List<String> getPriority(int type)
+	{
+		if(type==1)
+		{
+			if(standard=="2G")return gcf_2g;
+			else if(standard=="3G")return gcf_3g;
+			else if(standard=="LTE")return gcf_lte;
+		}
+		else if (type==2)
+		{
+			if(standard=="2G")return ptcrb_2g;
+			else if(standard=="3G")return ptcrb_3g;
+			else if(standard=="LTE")return ptcrb_lte;
+		}
+		return null;
+	}
+	public List<String> getStandardList()
+	{
+		if(standard.equals("2G"))return list_2g;
+		else if (standard.equals("3G"))return list_3g;
+		else if (standard.equals("LTE"))return list_LTE;
+		else return null;
+	}
+	public void setStandard(String s)
+	{
+		standard = s;
+	}
+	public void setTable_id(String s)
+	{
+		table_id = s;
+	}
+	public void setGCF(String s)
+	{
+		GCF_ver = s;
+	}
+	public void setPTCRB(String s)
+	{
+		PTCRB_ver = s;
+	}
+	public void set2G(int[] l)
+	{
+		test_2G = l;
+	}
+	public void set3G(int[] l)
+	{
+		test_3G = l;
+	}
+	public void setLTE(int[] l)
+	{
+		test_LTE = l;
+	}
+	public void setMain(String s)
+	{
+		main = s;
+	}
+	public String getGCF_ver()
+	{
+		return GCF_ver;
+	}
+	public String getPTCRB_ver()
+	{
+		return PTCRB_ver;
+	}
+	public String getTable_id()
+	{
+		return table_id;
+	}
+	public int[][] getTestList()
+	{
+		/*if(standard == "2G")
+			return test_2G;
+		else if (standard == "3G")
+			return test_3G;
+		else if (standard == "LTE")
+			return test_LTE;
+		else return null;*/
+		int [][] list = new int[3][];
+		if(standard == "LTE")
+		{
+			list[0] = test_LTE;
+			list[1] = test_3G;
+			list[2] = test_2G;
+		}
+		else if(standard == "3G")
+		{
+			list[2] = test_LTE;
+			list[0] = test_3G;
+			list[1] = test_2G;
+		}
+		else if(standard == "2G")
+		{
+			list[2] = test_LTE;
+			list[1] = test_3G;
+			list[0] = test_2G;
+		}
+		return list;
+	}
 	
-	public void queryString_2G()
+	public String getStandard()
 	{
-		this.query = "SELECT * FROM [NTUTC].[dbo].[test] WHERE ";
-		int first = 0;
-		
-		if(PTCRB_GCF[0]==1)
-		{
-			this.query = this.query.concat("CATEGORY_TYPE = 1 and (");
-		}
-		if(PTCRB_GCF[1]==1)
-		{
-			this.query = this.query.concat("CATEGORY_TYPE = 2 and (");
-		}
-		
-		
-		for(int i =0;i<test_2G.length;i++)
-		{
-			if (test_2G[i]==1)
-			{
-				if (first != 0)this.query =this.query.concat(" or ");
-				
-				this.query = this.query.concat(" CATEGORY_FDD_TYPE = '"+band_2g[i]+"' ");
-				
-				first = 1;
-			}
-		}
-		this.query = this.query.concat(")");
-	}
-	public void queryString_3G()
-	{
-		this.query = "SELECT * FROM [NTUTC].[dbo].[test] WHERE ";
-		int first = 0;
-		
-		if(PTCRB_GCF[0]==1)
-		{
-			this.query = this.query.concat("CATEGORY_TYPE = 1 and (");
-		}
-		if(PTCRB_GCF[1]==1)
-		{
-			this.query = this.query.concat("CATEGORY_TYPE = 2 and (");
-		}
-		
-		
-		for(int i =0;i<test_3G.length;i++)
-		{
-			if (test_3G[i]==1)
-			{
-				if (first != 0)this.query =this.query.concat(" or ");
-				
-				this.query = this.query.concat(" CATEGORY_FDD_TYPE = '"+band_3g[i]+"' ");
-				
-				first = 1;
-			}
-		}
-		this.query = this.query.concat(")");
-	}
-	public void queryString_LTE()
-	{
-		this.query = "SELECT * FROM [NTUTC].[dbo].[test] WHERE ";
-		int first = 0;
-		
-		if(PTCRB_GCF[0]==1)
-		{
-			this.query = this.query.concat("CATEGORY_TYPE = 1 and (");
-		}
-		if(PTCRB_GCF[1]==1)
-		{
-			this.query = this.query.concat("CATEGORY_TYPE = 2 and (");
-		}
-		
-		
-		for(int i =0;i<test_LTE.length;i++)
-		{
-			if (test_LTE[i]==1)
-			{
-				if (first != 0)this.query =this.query.concat(" or ");
-				
-				this.query = this.query.concat(" CATEGORY_FDD_TYPE = '"+band_LTE[i]+"' ");
-				
-				first = 1;
-			}
-		}
-		this.query = this.query.concat(")");
-		
-	}
-	public String get2gQuery()
-	{
-		queryString_2G();
-		return this.query;
-	}
-	public String get3gQuery()
-	{
-		queryString_3G();
-		return this.query;
-	}
-	public String getLTEQuery()
-	{
-		queryString_LTE();
-		return this.query;
-	}
-	
-	public void set2G(String s)
-	{
-		for(int i = 0 ; i <band_2g.length;i++)
-		{
-			if(s.compareTo(band_2g[i])==0)
-			{
-				test_2G[i] = 1;
-				System.out.println("Set "+s+" .");
-			}
-		}
-		System.out.println(s+" is not a correct band .");
-	}
-	public void set3G(String s)
-	{
-		for(int i = 0 ; i <band_3g.length;i++)
-		{
-			if(s.compareTo(band_3g[i])==0)
-			{
-				test_3G[i] = 1;
-				System.out.println("Set "+s+" .");
-				break;
-			}
-		}
-		System.out.println(s+" is not a correct band .");
-	}
-	public void setLTE(String s)
-	{
-		for(int i = 0 ; i <band_LTE.length;i++)
-		{
-			if(s.compareTo(band_LTE[i])==0)
-			{
-				test_LTE[i] = 1;
-				System.out.println("Set "+s+" .");
-			}
-		}
-		System.out.println(s+" is not a correct band .");
+		return standard;
 	}
 	public band()
 	{
-		System.out.println(getLTEQuery());
+		//System.out.println(getLTEQuery());
 	}
 	public static void main(String args[])
 	{
-	
-		band b = new band();
+		
+		long startTime = System.currentTimeMillis();
+		
 		merge m = new merge();
-		
-		String testQuery = b.get2gQuery();
-		m.connectDB();
-		ResultSet r = m.Query(testQuery);
-		
-		try{/*should do insertDB*/
-			while(r.next())
-			{
-				System.out.println("ID: "+r.getInt("IDENTIFY_CATEGORY")+", Category = "+r.getString("CATEGORY_TYPE")+" , band = "+r.getString("CATEGORY_FDD_TYPE"));
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		m.closeConn();
+		long endTime = System.currentTimeMillis();
+		long totTime = endTime - startTime;
+		System.out.println("Using Time:" + totTime);
 	}
 
 }

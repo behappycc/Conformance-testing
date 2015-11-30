@@ -1,0 +1,158 @@
+package band;
+
+import java.util.*;
+
+
+public class band {
+	
+	private String standard;
+	public int[] test_2G = {0,0,0,0};
+	public int[] test_3G = {0,0,0,0,0,0};
+	public int[] test_LTE = {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+	public String table_id = "10.1 FDD";
+	public String PTCRB_ver = "NAPRD03_v5.23_20150504";
+	public String GCF_ver = "GCF_v3.48.0_20130511_r170";
+	
+	public List<String> list_2g = Arrays.asList("850","900","1800","1900");
+	
+	public List<String> ptcrb_2g = Arrays.asList("900","1800");
+	public List<String> gcf_2g = Arrays.asList("850","1900");
+	
+	public List<String> list_3g = Arrays.asList("FDD I", "FDD II", "FDD III", "FDD IV", "FDD V", "FDD VIII");
+	public List<String> ptcrb_3g = Arrays.asList("FDD II", "FDD V", "FDD I", "FDD IV", "FDD VIII", "FDD III");
+	public List<String> gcf_3g = Arrays.asList("FDD I", "FDD VIII", "FDD II", "FDD V", "FDD IV", "FDD III");
+	
+	public List<String> list_LTE = Arrays.asList("FDD 01", "FDD 02", "FDD 03", "FDD 04", "FDD 05", "FDD 06",
+    		"FDD 07", "FDD 08", "FDD 09", "FDD 10", "FDD 11", "FDD 12",
+    		"FDD 13", "FDD 14", "FDD 15", "FDD 16", "FDD 17", "FDD 18",
+    		"FDD 19", "FDD 20", "FDD 21", "FDD 22", "FDD 23", "FDD 24",
+    		"FDD 25", "FDD 26", "FDD 27", "FDD 28", "FDD 29", "FDD 30","TDD 38","TDD 39","TDD 40","TDD 41");
+    
+	//3\7\4\5\1\8\11\12\13\14\25\26\18\19\20\21 
+	public List<String> gcf_lte = Arrays.asList("FDD 03","FDD 07","FDD 04","FDD 05", "FDD 01","FDD 08","FDD 11", "FDD 12",
+    		"FDD 13", "FDD 14", "FDD 25", "FDD 26","FDD 18",
+    		"FDD 19", "FDD 20", "FDD 21","FDD 02","FDD 06",
+    		  "FDD 09", "FDD 10",  "FDD 15", "FDD 16", "FDD 17",  "FDD 22", "FDD 23", "FDD 24",
+    		 "FDD 27", "FDD 28", "FDD 29", "FDD 30","TDD 38","TDD 39","TDD 40","TDD 41");
+	//FDD 4\7\14\25\24\2\5\7\12\13
+	public List<String> ptcrb_lte = Arrays.asList("FDD 04","FDD 17","FDD 14","FDD 25","FDD 24","FDD 02","FDD 05","FDD 07","FDD 12",
+    		 "FDD 13", "FDD 01" ,"FDD 03", "FDD 06",
+    		 "FDD 08", "FDD 09", "FDD 10", "FDD 11","FDD 15", "FDD 16",  "FDD 18",
+    		 "FDD 19", "FDD 20", "FDD 21", "FDD 22","FDD 23", 
+    		 "FDD 26", "FDD 27", "FDD 28", "FDD 29","FDD 30","TDD 38","TDD 39","TDD 40","TDD 41");
+	
+	String query;
+	public boolean contains_test(String b)
+	{
+		if(list_LTE.contains(b)&&test_LTE[list_LTE.indexOf(b)]==1)
+			return true;
+		else if (list_3g.contains(b)&&test_3G[list_3g.indexOf(b)]==1)
+			return true;
+		else if (list_2g.contains(b)&&test_2G[list_2g.indexOf(b)]==1)
+			return true;
+		else return false;
+	}
+	public boolean contains(String b)
+	{
+		if(list_LTE.contains(b)||list_3g.contains(b)||list_2g.contains(b))
+			return true;
+		else return false;
+	}
+	public List<String> getPriority(int type)
+	{
+		if(type==1)
+		{
+			if(standard=="2G")return gcf_2g;
+			else if(standard=="3G")return gcf_3g;
+			else if(standard=="LTE")return gcf_lte;
+		}
+		else if (type==2)
+		{
+			if(standard=="2G")return ptcrb_2g;
+			else if(standard=="3G")return ptcrb_3g;
+			else if(standard=="LTE")return ptcrb_lte;
+		}
+		return null;
+	}
+	public List<String> getStandardList()
+	{
+		if(standard.equals("2G"))return list_2g;
+		else if (standard.equals("3G"))return list_3g;
+		else if (standard.equals("LTE"))return list_LTE;
+		else return null;
+	}
+	public void setStandard(String s)
+	{
+		standard = s;
+	}
+	public void setTable_id(String s)
+	{
+		table_id = s;
+	}
+	public void setGCF(String s)
+	{
+		GCF_ver = s;
+	}
+	public void setPTCRB(String s)
+	{
+		PTCRB_ver = s;
+	}
+	public void set2G(int[] l)
+	{
+		test_2G = l;
+	}
+	public void set3G(int[] l)
+	{
+		test_3G = l;
+	}
+	public void setLTE(int[] l)
+	{
+		test_LTE = l;
+	}
+	public String getGCF_ver()
+	{
+		return GCF_ver;
+	}
+	public String getPTCRB_ver()
+	{
+		return PTCRB_ver;
+	}
+	public String getTable_id()
+	{
+		return table_id;
+	}
+	public int[][] getTestList()
+	{
+		/*if(standard == "2G")
+			return test_2G;
+		else if (standard == "3G")
+			return test_3G;
+		else if (standard == "LTE")
+			return test_LTE;
+		else return null;*/
+		int [][] list = new int[3][];
+		list[0] = test_LTE;
+		list[1] = test_3G;
+		list[2] = test_2G;
+	}
+	
+	public String getStandard()
+	{
+		return standard;
+	}
+	public band()
+	{
+		//System.out.println(getLTEQuery());
+	}
+	public static void main(String args[])
+	{
+		
+		long startTime = System.currentTimeMillis();
+		
+		merge m = new merge();
+		long endTime = System.currentTimeMillis();
+		long totTime = endTime - startTime;
+		System.out.println("Using Time:" + totTime);
+	}
+
+}
